@@ -13,7 +13,9 @@ int mosfet_pin = 3;
 //int32_t frequency = 10000;  //frequency (in Hz)
 int32_t frequency = 8000;  //frequency (in Hz)
 
-int PV_pos_pin = A2;
+//int PV_pos_pin = A2;
+//int PV_neg_pin = A0;
+int PV_pos_pin = A1;
 int PV_neg_pin = A0;
 int PV_pos_val = 0;
 int PV_neg_val = 0;
@@ -89,15 +91,14 @@ void loop()
 //    analogWrite(mosfet_pin, duty); //duty cycle 15%
 //    duty = duty_calibrate();
     pwmWrite(mosfet_pin, duty_calibrate());
-    delayMicroseconds(40); // delay by 50 micro seconds (half the period)
-  
+//    delayMicroseconds(40); // delay by 50 micro seconds (half the period)
     
     int slow = 20000;
     int mid = 10000;
     int fmid = 5000;
     int fast = 1000;
     int vfast = 100;
-    if (loop_count >= fmid)
+    if (loop_count >= fast)
     {
       measure_analog();  // MEASURED DATA FROM ANALOG PINS
       PV_volt  = double(PV_pos_val - PV_neg_val) * double(5.0/1023.0) * VOLT_DIV;
@@ -248,7 +249,7 @@ static int cal_duty(double PV_volt, double PV_current)
   double delta_power = PV_power - prev_power;
   double delta_volt = PV_volt - prev_volt;
   int d;
-  double delta_threshold = 0.005;
+  double delta_threshold = 0.02;
   
   if (delta_power > 0)
   {
