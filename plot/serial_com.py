@@ -37,16 +37,16 @@ class Serial_Com:
         self.PV_power = []
         self.PV_duty = []
         self.item_num = []
-        self.run_50 = False
-        self.dut_xy = False
         self.counter = 0
-        pass
+        self.sync = 0
+        self.end_sweep = False
 
     def read_serial(self):
         if self.serialPort.in_waiting > 0:
             data = self.serialPort.readline()
             try:
                 self.data = data.decode('Ascii')
+                # print(f"self.data: {self.data}")
                 self.parse_data()
             except:
                 print("Invalid data")
@@ -56,26 +56,24 @@ class Serial_Com:
         if self.data[0:7] == "PV_vol:":
             self.PV_volt.append(float(self.data[8:]))
             print(f"PV_vol: {self.PV_volt[-1]}V", end='  ')
+            self.sync += 1
         if self.data[0:7] == "PV_cur:":
             self.PV_current.append(float(self.data[8:]))
             print(f"PV_cur: {self.PV_current[-1]}A", end='  ')
+            self.sync += 1
         if self.data[0:7] == "PV_pow:":
             self.PV_power.append(float(self.data[8:]))
             self.item_num.append(int(self.counter))
-            self.counter += 1
             print(f"PV_pow: {self.PV_power[-1]}W", end='  ')
+            self.counter += 1
+            self.sync += 1
         if self.data[0:7] == "PV_dut:":
             self.PV_duty.append(float(self.data[8:]))
             print(f"PV_duty: {self.PV_duty[-1]}")
-        if self.data[0:7] == "REC_50:":  # record data when dut = 50
-            self.run_50 = True
-            self.dut_xy = False
-            print(f"Triggered rec_50 protocol!")
-        if self.data[0:7] == "REC_MP:":  # MPPT reached & save
-            self.run_50 = False
-            self.dut_xy = True
-            print(f"Triggered rec_mp protocol!")
-            # print(f"self.PV_duty: {'{:.2f}'.format(self.PV_duty)}")
+            self.sync += 1
+        if self.data[0:12] == "end of sweep":
+            print("end of sweep detected")
+            self.end_sweep = True
 
     def clean_data(self):
         self.PV_volt.clear()
