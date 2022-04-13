@@ -1,5 +1,5 @@
 #define VOLT_DIV 11
-#define MAX_DUTY 93
+#define MAX_DUTY 100
 #define MIN_DUTY 0
 
 //Initializing LED Pin
@@ -59,7 +59,7 @@ void loop() {
     if (duty > MAX_DUTY-3)
     {
       Serial.println("end of sweep");
-      delay(600000);  // delay 60sec
+      delay(200000);  // delay 60sec
       duty = MIN_DUTY;
     }
 
@@ -105,10 +105,10 @@ static int duty_calibrate()
 static void serial_comms(double volt, double current, double duty_cycle)
 {
   double PV_power = volt * current;
-  if (PV_power > 7) // invalid data
-  {
-    return;
-  }
+//   if (PV_power > 7) // invalid data
+//   {
+//     return;
+//   }
   //print voltage
   Serial.print("PV_vol: ");
   Serial.print(PV_volt, 5);

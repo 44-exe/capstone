@@ -30,8 +30,8 @@ and 1 means totally related.
 train_r2 = r2_score(train_y, mymodel(train_x))
 test_r2 = r2_score(test_y, mymodel(test_x))
 
-print(f"rd score: {train_r2}")
-print(f"rd score: {test_r2}")
+print(f"rd score: {train_r2}, the trained model is {train_r2 * 100}% accurate")
+print(f"rd score: {test_r2}, the test model is {test_r2 * 100}% accurate")
 
 """**************************************************************
 After establishing the model, we can use the model to 
