@@ -24,11 +24,15 @@ double prev_current = 0;
 void setup() {
   Serial.begin(9600);
 
-
 //  TCCR0B = TCCR0B & B11111000 | B00000001; // PWM 31372.55 Hz pins 5 and 6
-    TCCR0B = TCCR0B & B11111000 | B00000010; // PWM 7000 Hz pins 5 and 6
+//     TCCR0B = TCCR0B & B11111000 | B00000010; // PWM 7000 Hz pins 5 and 6
 //  TCCR2B = TCCR2B & B11111000 | B00000001; // PWM 31372.55 Hz pins 3 and 11
 //  TCCR1B = TCCR1B & B11111000 | B00000001; // PWM 62745.10 Hz pins 9 and 10
+
+  ////////  THIS GENERATES 10KHz PWM at PIN5 //////////
+  TCCR0A = B10000011; // PWM 31372.55 Hz pins 5 and 6
+  TCCR0B = TCCR0B & B11111000 | B10001010; // PWM 31372.55 Hz pins 5 and 6
+  OCR0A = 200;
 
   pinMode(mosfet_pin, OUTPUT);
   delay(1000);
