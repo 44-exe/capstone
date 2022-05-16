@@ -19,7 +19,6 @@ lm.calc_max_regression()
 ### set up arduino
 os.system("sudo chmod a+rw /dev/ttyACM0")
 build_path = "/home/aji/projects/capstone/ard_ml_mppt/ard_ml_mppt.ino"
-# build_path = "/home/aji/projects/capstone/ard_training/ard_training.ino"
 build_upload_cmd = f"arduino-cli compile -b arduino:avr:uno {build_path} -u -p /dev/ttyACM0"
 os.system(build_upload_cmd)
 print("Building & uploading")

@@ -3,7 +3,7 @@
  *
  */
 
-#include <PWM.h>
+// #include <PWM.h>
 
 #define VOLT_DIV 11
 #define MAX_DUTY 92
@@ -139,7 +139,7 @@ void loop() {
   //output PWM with duty
   analogWrite(mosfet_pin, duty_calibrate());
 
-  counter++;
+  // counter++;
 //   if (counter > 250)
 //   {
 //     counter = 0;
@@ -377,8 +377,8 @@ static double var_cal_duty(double loc_PV_volt, double loc_PV_current)
 
 volatile uint16_t int_counter = 0;
 
-ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
 //generates pulse wave of frequency 1Hz/2 = 0.5Hz (takes two cycles for full wave- toggle high then toggle low)
+ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz toggles pin 13 (LED)
 
   //every 3sec?
   if (int_counter > 3)

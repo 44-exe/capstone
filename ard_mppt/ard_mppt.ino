@@ -1,8 +1,8 @@
 #include <PWM.h>
 
 #define VOLT_DIV 11
-#define MAX_DUTY 93
-#define MIN_DUTY 7
+#define MAX_DUTY 90
+#define MIN_DUTY 0
 
 //Initializing LED Pin
 int mosfet_pin = 5;
@@ -48,15 +48,17 @@ void loop() {
   
   if (duty > MAX_DUTY)
   {
-    duty = MAX_DUTY-2;
+    duty = MAX_DUTY;
   }
   if (duty < MIN_DUTY)
   {
-    duty = MIN_DUTY+2;
+    // duty = MIN_DUTY+2;
+    duty = MIN_DUTY;
   }
 
 
-  if ((counter % 30) == 0)
+  // if ((counter % 250) == 0)
+  if ((counter % 50) == 0)
   {
     //**** SEND DATA TO PC ****//
     serial_comms(PV_volt, PV_current, duty);
@@ -71,7 +73,7 @@ void loop() {
       duty = MIN_DUTY;
 
     //**** USE THIS TO FOR CONSTANT VOLT ****//
-//    duty = 50;
+    // duty = 0;
   }
   
   analogWrite(mosfet_pin, duty_calibrate()); //duty cycle 15%
@@ -91,11 +93,7 @@ void loop() {
     }
     PV_pos_val = int(tmp_sum/20.0);
     
-//    PV_volt  = double(PV_pos_val - PV_neg_val) * double(5.0/1023.0) * VOLT_DIV;
     PV_volt = double(PV_pos_val) * 0.0049 * VOLT_DIV;
-//    Serial.print("   PV_volt: ");
-//    Serial.println(PV_volt);
-    ////////  I = I1 + I2 = (V_pv/R_total) + (V_pv * duty^2/R_2)  ////////
     PV_current = PV_volt/11000.0 + PV_volt*(duty/100.0)*(duty/100.0)/10.0;
     
 //    serial_comms(PV_volt, PV_current, duty);
